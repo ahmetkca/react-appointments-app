@@ -25,10 +25,9 @@ const DropDown = ({ toggle }) => {
   );
 }
 
-const Search = () => {
+const Search = ({ query, onSearchQueryChange }) => {
 
   const [toggleDropDown, setToggleDropDown] = useState(false);
-
 
   return (
     <div className="py-5">
@@ -37,7 +36,8 @@ const Search = () => {
           <BiSearch />
           <label htmlFor="query" className="sr-only"></label>
         </div>
-        <input type="text" name="query" id="query" value=""
+        <input type="text" name="query" id="query" value={query}
+          onChange={(event) => { onSearchQueryChange(event.target.value) }}
           className="block w-full pl-8 border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Search"
         />
