@@ -1,31 +1,70 @@
 import { useState } from "react";
 import { BiSearch, BiCaretDown, BiCheck } from "react-icons/bi"
 
-const DropDown = ({ toggle }) => {
+const DropDown = ({ toggleDropDown, sortBy, onSortByChange, orderBy, onOrderByChange }) => {
 
-  const MenuItem = ({ name, className = "" }) => {
+  const MenuItem = ({ name, className = "", toggleName, onToggleChange, checkToggle }) => {
     const baseClassName = "flex justify-between px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 hover:text-gray-900";
     return (
-      <div className={`${baseClassName} ${className}`}
-        role="menuitem">{name}<BiCheck /></div>
+      <div
+        onClick={() => {
+          console.log(`onClick: ${toggleName}`);
+          onToggleChange(toggleName)
+        }}
+        className={`${baseClassName} ${className}`}
+        role="menuitem">
+        {name}
+        {checkToggle ? (<BiCheck />) : (<span></span>)}
+      </div>
     );
   }
-  if (!toggle) return null;
+
+  if (!toggleDropDown) return null;
   return (
 
     <div className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
       <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-        <MenuItem name="Pet Name" />
-        <MenuItem name="Owner Name" />
-        <MenuItem name="Date Name" />
-        <MenuItem className="border-t-2" name="Asc" />
-        <MenuItem name="Desc" />
+        <MenuItem name="Pet Name"
+          toggleName="petName"
+          onToggleChange={(toggle) => {
+            console.log(`DropDown: onToggleChange: ${toggle}`);
+            onSortByChange(toggle)
+          }}
+          checkToggle={sortBy === "petName"} />
+        <MenuItem name="Owner Name"
+          toggleName="ownerName"
+          onToggleChange={(toggle) => {
+            console.log(`DropDown: onToggleChange: ${toggle}`);
+            onSortByChange(toggle)
+          }}
+          checkToggle={sortBy === "ownerName"} />
+        <MenuItem name="Date Name"
+          toggleName="aptDate"
+          onToggleChange={(toggle) => {
+            console.log(`DropDown: onToggleChange: ${toggle}`);
+            onSortByChange(toggle)
+          }}
+          checkToggle={sortBy === "aptDate"} />
+        <MenuItem className="border-t-2" name="Asc"
+          toggleName="asc"
+          onToggleChange={(toggle) => {
+            console.log(`DropDown: onToggleChange: ${toggle}`);
+            onOrderByChange(toggle)
+          }}
+          checkToggle={orderBy === "asc"} />
+        <MenuItem name="Desc"
+          toggleName="desc"
+          onToggleChange={(toggle) => {
+            console.log(`DropDown: onToggleChange: ${toggle}`);
+            onOrderByChange(toggle)
+          }}
+          checkToggle={orderBy === "desc"} />
       </div>
     </div>
   );
 }
 
-const Search = ({ query, onSearchQueryChange }) => {
+const Search = ({ query, onSearchQueryChange, sortBy, onSortByChange, orderBy, onOrderByChange }) => {
 
   const [toggleDropDown, setToggleDropDown] = useState(false);
 
@@ -49,7 +88,12 @@ const Search = ({ query, onSearchQueryChange }) => {
             >
               Sort By <BiCaretDown className="ml-2" />
             </button>
-            <DropDown toggle={toggleDropDown} />
+            <DropDown
+              sortBy={sortBy}
+              onSortByChange={(sort) => { onSortByChange(sort) }}
+              orderBy={orderBy}
+              onOrderByChange={(order) => { onOrderByChange(order) }}
+              toggleDropDown={toggleDropDown} />
           </div>
         </div>
       </div>

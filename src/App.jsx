@@ -2,7 +2,6 @@ import './App.css'
 import { BiCalendar } from "react-icons/bi"
 import Search from "./components/Search"
 import AddAppointment from "./components/AddAppointment"
-// import appointmentList from "./data/appointments.json"
 
 import AppointmentInfo from './components/AppointmentInfo'
 import { useEffect, useState } from 'react'
@@ -14,6 +13,9 @@ function App() {
   const [appointmentList, setAppointmentList] = useState([]);
 
   const [query, setQuery] = useState("");
+
+  let [sortBy, setSortBy] = useState("petName");
+  let [orderBy, setOrderBy] = useState("asc");
 
   const fetcthAppointments = useCallback(
     () => {
@@ -48,15 +50,26 @@ function App() {
         appointment.aptDate.toLowerCase().includes(query.toLowerCase()) ||
         appointment.aptNotes.toLowerCase().includes(query.toLowerCase())
       )
+    }).sort((a, b) => {
+      const order = orderBy === "asc" ? 1 : -1;
+      return (
+        a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+          ? -1 * order : 1 * order
+      )
     });
-
 
   return (
     <div className="App container mx-auto mt-3 font-thin">
       <h1 className="font-medium leading-tight text-5xl mt-0 mb-2">
         <BiCalendar className="inline-block text-red-400 align-middle" />Your Appointments</h1>
       <AddAppointment />
-      <Search query={query} onSearchQueryChange={onSearchQueryChange} />
+      <Search
+        query={query}
+        onSearchQueryChange={onSearchQueryChange}
+        sortBy={sortBy}
+        onSortByChange={(sort) => { setSortBy(sort) }}
+        orderBy={orderBy}
+        onOrderByChange={(order) => { setOrderBy(order) }} />
 
       <ul className="divide-y divide-gray-200">
         {filteredAppointmentList.map(appointment => (
