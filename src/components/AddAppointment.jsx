@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BiCalendarPlus } from "react-icons/bi";
 
 
@@ -22,21 +23,30 @@ const FormItem = ({
 
 const AddAppointment = () => {
 
+  const [toggle, setToggle] = useState(true);
+
+  const handleToggle = () => {
+    setToggle(!toggle);
+  }
+
   return (
     <div>
-      <button className="w-full px-2 py-3 text-left text-white bg-blue-400 rounded-t-md">
+      <button onClick={() => handleToggle()} 
+        className={`w-full px-2 py-3 text-left text-white bg-blue-400 focus:ring-2 focus:ring-offset-2 ${toggle ? 'rounded-t-md' : 'rounded-md'}`}>
         <div><BiCalendarPlus className="inline-block align-text-top" /> Add Appointment</div>
       </button>
-      <div className="border-b-2 border-r-2 border-l-2 border-blue-200 rounded-b-md pl-4 pr-4 pb-4">
-        <FormItem inputType="text" labelName="Owner Name" formItemId="ownerName" />
-        <FormItem inputType="text" labelName="Pet Name" formItemId="petName" />
-        <FormItem inputType="date" labelName="Apt Date" formItemId="aptDate" />
-        <FormItem inputType="time" labelName="Apt Time" formItemId="aptTime" />
-        <FormItem inputType={null} labelName="Appointment Notes" formItemId="aptNotes"
-          inputFallback={<textarea id={"aptNotes"} name={"aptNotes"} rows="3"
-            className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-            placeholder="Detailed comments about the condition"></textarea>} />
-      </div>
+      {toggle &&
+        <div className="border-b-2 border-r-2 border-l-2 border-blue-200 rounded-b-md pl-4 pr-4 pb-4">
+          <FormItem inputType="text" labelName="Owner Name" formItemId="ownerName" />
+          <FormItem inputType="text" labelName="Pet Name" formItemId="petName" />
+          <FormItem inputType="date" labelName="Apt Date" formItemId="aptDate" />
+          <FormItem inputType="time" labelName="Apt Time" formItemId="aptTime" />
+          <FormItem inputType={null} labelName="Appointment Notes" formItemId="aptNotes"
+            inputFallback={<textarea id={"aptNotes"} name={"aptNotes"} rows="3"
+              className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+              placeholder="Detailed comments about the condition"></textarea>} />
+        </div>
+      }
     </div>
   );
 }
