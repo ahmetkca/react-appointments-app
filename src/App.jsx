@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useCallback } from 'react'
 
 function App() {
+  let appIdGlobal = 25;
   let global = 0;
 
   const [appointmentList, setAppointmentList] = useState([]);
@@ -58,11 +59,16 @@ function App() {
       )
     });
 
+  const addNewAppointment = (newAppointment) => {
+    console.log({ id: appIdGlobal++, ...newAppointment });
+    setAppointmentList([{ id: appIdGlobal++, ...newAppointment }, ...appointmentList]);
+  };
+
   return (
     <div className="App container mx-auto mt-3 font-thin">
       <h1 className="font-medium leading-tight text-5xl mt-0 mb-2">
         <BiCalendar className="inline-block text-red-400 align-middle" />Your Appointments</h1>
-      <AddAppointment />
+      <AddAppointment addNewAppointment={addNewAppointment} />
       <Search
         query={query}
         onSearchQueryChange={onSearchQueryChange}
